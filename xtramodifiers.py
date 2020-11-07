@@ -2,27 +2,27 @@
 
 from evdev import UInput, InputDevice, categorize, ecodes, list_devices
 import time
+import sys
+import importlib.util
 
-devices = [InputDevice(path) for path in list_devices()]
-
-for index, device in enumerate(devices):
-    print(str(index) + ": ", device.path, device.name, device.phys)
-
-choice = input(f'\nChoice device: [0-{len(devices)-1}]\n')
-
-# print(devices[int(choice)].path)
-
-#dev = InputDevice('/dev/input/event3')
-dev = InputDevice(devices[int(choice)].path)
 ui = UInput()
-dev.grab()
 
-# Config
-mod1 = 'KEY_CAPSLOCK'
-mod1_secondary_function = 'KEY_LEFTCTRL'
-mod2 = 'KEY_ENTER'
-mod2_secondary_function = 'KEY_RIGHTCTRL'
-max_delay = 0.3
+if '-c' in sys.argv:
+    # Load config module from path
+    path_to_config = sys.argv[sys.argv.index('-c') + 1]
+    spec = importlib.util.spec_from_file_location("module.name", path_to_config)
+    config = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(config)
+else: # if no config arg is given, assume there is a config.py in the same dir
+    import config
+
+# Config vars
+mod1 = config.config['mod1']
+mod1_secondary_function = config.config['mod1_secondary_function']
+mod2 = config.config['mod2']
+mod2_secondary_function = config.config['mod2_secondary_function']
+max_delay = config.config['max_delay']
+dev = InputDevice(config.config['dev'])
 
 # Flags
 last_input_was_special_combination = False
@@ -33,10 +33,12 @@ mod2_down_or_held = False
 mod1_last_time_down = 0
 mod2_last_time_down = 0
 
+dev.grab() # intercept inputs from dev
+
 for event in dev.read_loop(): # reading events from keyboard
     if event.type == ecodes.EV_KEY:
         key_event = categorize(event)
-        print(key_event)
+        # print(key_event)
         if key_event.keycode == mod1: # MOD1 EVENT
             if key_event.keystate == 1:
                 mod1_down_or_held = True

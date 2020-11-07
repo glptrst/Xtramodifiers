@@ -1,5 +1,6 @@
 * License
 xtramodifiers
+
 Copyright (C) 2020  Giulio Pietroiusti
 
 This program is free software: you can redistribute it and/or modify

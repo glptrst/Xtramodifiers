@@ -7,9 +7,9 @@ import importlib.util
 
 ui = UInput()
 
-if '-c' in sys.argv:
+if len(sys.argv) > 1:
     # Load config module from path
-    path_to_config = sys.argv[sys.argv.index('-c') + 1]
+    path_to_config = sys.argv[1]
     spec = importlib.util.spec_from_file_location("module.name", path_to_config)
     config = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(config)

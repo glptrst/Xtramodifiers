@@ -1,3 +1,65 @@
+#+title: xtramodifiers
+#+email: giulio.pietroiusti@gmail.com
+#+language: en
+#+creator: Emacs 27.1 (Org mode 9.3)
+
+xtramodifiers allows you to make normal keys behave like modifiers
+(CTRL, ALT, etc.) when they are held down. When pressed and released
+they behave normally.  This might be extremely useful for those who,
+like Emacs' users, make extensive use of modifiers.
+
+keywords: dual function keys, extra modifiers, multi-purpose keys.
+
+* Dependencies
+xtramodifiers requires [[https://github.com/gvalkov/python-evdev][python-evdev]].
+
+* Usage
+You should first create a config file. In order to do so, you should
+know the names xtramodifiers (like python-evdev) uses to refer to
+keys.
+
+Run
+#+begin_src bash
+python -m evdev.evtest
+#+end_src
+
+Choose the device (the keyboard whose behavior you want to modify).
+Now you'll see the name of the keys as you press them.  Now you can
+create a config file like the following (see config.py):
+#+begin_src python
+config = {
+    'dev': '/dev/input/event3',
+    'mod1': 'KEY_CAPSLOCK',
+    'mod1_secondary_function': 'KEY_LEFTCTRL',
+    'mod2': 'KEY_ENTER',
+    'mod2_secondary_function': 'KEY_RIGHTCTRL',
+    'max_delay': 0.3
+}
+#+end_src
+A max_delay of 0.3 means that if you hold Enter (or whatever
+``xtramodifier'' you have set up) down for more than 0.3 seconds and
+you don't hit any other key, Enter is going to send no input when
+released.
+
+Now that you have a config file, you can start xtramodifiers:
+#+begin_src bash
+sudo python extramodifiers.py /path/to/config.py
+#+end_src
+
+If no path to a config file is given, then xtramodifiers looks for a
+config.py file in the same directory.
+
+* Similar Software
+- [[https://github.com/mooz/xkeysnail/][xkeysnail]]
+
+- [[https://gitlab.com/interception/linux/plugins/dual-function-keys][interception dual function keys]]
+
+- [[https://gitlab.com/at-home-modifier/at-home-modifier-evdev][at home modifier]]
+
+* Bugs
+- xtramodifiers, when executed, resets my xkb configuration, so I have
+  to restore it each time.
+
 * License
 xtramodifiers
 

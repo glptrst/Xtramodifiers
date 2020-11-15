@@ -49,16 +49,23 @@ for event in dev.read_loop(): # reading events from keyboard
                 last_input_was_special_combination = False # NECESSARY?
             else: # key_event.keystate == 0
                 mod1_down_or_held = False
-                if (last_input_was_special_combination):
-                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 0)
+                if (mod2_down_or_held):
+                    last_input_was_special_combination = True
+                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 1)
+                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1], 1)
+                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1], 0)
                     ui.syn()
                 else:
-                    if (time.monotonic() - mod1_last_time_down < max_delay):
-                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1], 1)
-                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1], 0)
+                    if (last_input_was_special_combination):
+                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 0)
                         ui.syn()
                     else:
-                        pass
+                        if (time.monotonic() - mod1_last_time_down < max_delay):
+                            ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1], 1)
+                            ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1], 0)
+                            ui.syn()
+                        else:
+                            pass
         elif key_event.keycode == mod2: # MOD2 EVENT
             if key_event.keystate == 1:
                 mod2_down_or_held = True
@@ -69,14 +76,23 @@ for event in dev.read_loop(): # reading events from keyboard
                 last_input_was_special_combination = False # NECESSARY?
             else: # key_event.keystate == 0
                 mod2_down_or_held = False
-                if (last_input_was_special_combination):
-                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 0)
+                if (mod1_down_or_held):
+                    last_input_was_special_combination = True
+                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 1)
+                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2], 1)
+                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2], 0)
                     ui.syn()
                 else:
-                    if (time.monotonic() - mod2_last_time_down < max_delay):
-                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2], 1)
-                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2], 0)
+                    if (last_input_was_special_combination):
+                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 0)
                         ui.syn()
+                    else:
+                        if (time.monotonic() - mod2_last_time_down < max_delay):
+                            ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2], 1)
+                            ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2], 0)
+                            ui.syn()
+                        else:
+                            pass
         else: # ANY OTHER KEYS
             if key_event.keystate == 1:
                 if (mod1_down_or_held):

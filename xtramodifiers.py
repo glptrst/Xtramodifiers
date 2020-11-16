@@ -1,11 +1,16 @@
 # Turn normal keys into modifiers when held.
 
 from evdev import UInput, InputDevice, categorize, ecodes, list_devices
+from evdev_helpers import select_devices
 import time
 import sys
 import importlib.util
 
 ui = UInput()
+
+# interactivey choose device
+devices = select_devices()
+dev = devices[0]
 
 if len(sys.argv) > 1:
     # Load config module from path
@@ -22,7 +27,6 @@ mod1_secondary_function = config.config['mod1_secondary_function']
 mod2 = config.config['mod2']
 mod2_secondary_function = config.config['mod2_secondary_function']
 max_delay = config.config['max_delay']
-dev = InputDevice(config.config['dev'])
 
 # Flags
 last_input_was_special_combination = False

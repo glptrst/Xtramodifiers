@@ -4,9 +4,9 @@
 #+creator: Emacs 27.1 (Org mode 9.3)
 
 xtramodifiers allows you to make normal keys behave like modifiers
-(CTRL, ALT, etc.) when they are held down. When pressed and released
-they behave normally.  This might be extremely useful for those who,
-like Emacs' users, make extensive use of modifiers.
+(CTRL, ALT, etc.) when they are held down, but normally when pressed
+and released. This can be extremely useful for those who, like Emacs'
+users, make extensive use of modifiers.
 
 keywords: dual function keys, extra modifiers, multi-purpose keys.
 
@@ -24,11 +24,10 @@ python -m evdev.evtest
 #+end_src
 
 Choose the device (the keyboard whose behavior you want to modify).
-Now you'll see the name of the keys as you press them.  Now you can
-create a config file like the following (see config.py):
+You'll see the name of the keys as you press them.  Now you can create
+a config file like the following (see config_example.py):
 #+begin_src python
 config = {
-    'dev': '/dev/input/event3',
     'mod1': 'KEY_CAPSLOCK',
     'mod1_secondary_function': 'KEY_LEFTCTRL',
     'mod2': 'KEY_ENTER',
@@ -38,16 +37,24 @@ config = {
 #+end_src
 A max_delay of 0.3 means that if you hold Enter (or whatever
 ``xtramodifier'' you have set up) down for more than 0.3 seconds and
-you don't hit any other key, Enter is going to send no input when
-released.
+don't hit any other key before releasing it, Enter is going to send no
+input.
 
-Now that you have a config file, you can start xtramodifiers:
+Now that you have a config file, you can start xtramodifiers with:
 #+begin_src bash
-sudo python extramodifiers.py /path/to/config.py
+sudo python extramodifiers.py -c /path/to/config.py
 #+end_src
 
 If no path to a config file is given, then xtramodifiers looks for a
 config.py file in the same directory.
+
+By default, extramodifiers shows you a list of device and asks you to
+select one of them. If you don't want this interactive behaviour use
+the '-d' option:
+
+#+begin_src bash
+sudo python extramodifiers.py -c /path/to/config.py -d /dev/input/event3
+#+end_src
 
 * Similar Software
 - [[https://github.com/mooz/xkeysnail/][xkeysnail]]

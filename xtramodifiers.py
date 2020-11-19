@@ -21,7 +21,11 @@ if args.config:
     config = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(config)
 else: # if no config arg is given, assume there is a config.py in the same dir
-    import config
+    try:
+        import config
+    except ModuleNotFoundError:
+        print("Error: You should either create an extramod_config.py in the same directly or specify a path using the '-c' option.")
+        sys.exit()
 
 if args.device:
     dev = InputDevice(args.device)

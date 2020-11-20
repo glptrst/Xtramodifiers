@@ -81,6 +81,7 @@ for event in dev.read_loop(): # reading events from keyboard
                     print(f'{mod1} DOWN')
                     ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1], 0)
                     print(f'{mod1} UP')
+                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 0)
                     ui.syn()
                 else:
                     if (last_input_was_special_combination):
@@ -121,6 +122,7 @@ for event in dev.read_loop(): # reading events from keyboard
                     print(f'{mod2} DOWN')
                     ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2], 0)
                     print(f'{mod2} UP')
+                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 0)
                     ui.syn()
                 else:
                     if (last_input_was_special_combination):

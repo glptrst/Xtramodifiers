@@ -40,6 +40,9 @@ A max_delay of 0.3 means that if you hold Enter (or whatever
 don't hit any other key before releasing it, Enter is going to send no
 input.
 
+If you want only one xtramodifier, as opposed to two, then set mod2 to
+None.
+
 Now that you have a config file, you can start xtramodifiers with:
 #+begin_src bash
 sudo python extramodifiers.py -c /path/to/config.py

@@ -22,9 +22,11 @@ if args.config:
     spec.loader.exec_module(config)
 else: # if no config arg is given, assume there is a config.py in the same dir
     try:
-        import config
-    except ModuleNotFoundError:
-        print("Error: You should either create an extramod_config.py in the same directly or specify a path using the '-c' option.")
+        spec = importlib.util.spec_from_file_location("module.name", './config.py')
+        config = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(config)
+    except FileNotFoundError:
+        print("Error: You should either have a config.py in the same directory or specify a path using the '-c' option.")
         sys.exit()
 
 if args.device:

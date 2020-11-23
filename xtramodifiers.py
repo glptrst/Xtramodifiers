@@ -7,7 +7,11 @@ import time
 import sys
 import importlib.util
 
-ui = UInput()
+try:
+    ui = UInput()
+except:
+    print('Error: must run as root')
+    sys.exit()
 
 parser = argparse.ArgumentParser(
     description="Make normal keys behave like modifiers when held.")

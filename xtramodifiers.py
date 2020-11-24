@@ -74,12 +74,15 @@ for event in dev.read_loop(): # reading events from keyboard
                 mod1_down_or_held = False
                 print('mod1_down_or_held = False')
                 if (mod2_down_or_held):
-                    last_input_was_special_combination = True
-                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 1)
-                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1], 1)
-                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1], 0)
-                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 0)
-                    ui.syn()
+                    if (time.monotonic() - mod1_last_time_down < max_delay):
+                        last_input_was_special_combination = True
+                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 1)
+                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1], 1)
+                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1], 0)
+                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 0)
+                        ui.syn()
+                    else:
+                        pass
                 else:
                     if (last_input_was_special_combination):
                         ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 0)
@@ -102,12 +105,15 @@ for event in dev.read_loop(): # reading events from keyboard
             else: # key_event.keystate == 0
                 mod2_down_or_held = False
                 if (mod1_down_or_held):
-                    last_input_was_special_combination = True
-                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 1)
-                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2], 1)
-                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2], 0)
-                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 0)
-                    ui.syn()
+                    if (time.monotonic() - mod2_last_time_down < max_delay):
+                        last_input_was_special_combination = True
+                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 1)
+                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2], 1)
+                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2], 0)
+                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 0)
+                        ui.syn()
+                    else:
+                        pass
                 else:
                     if (last_input_was_special_combination):
                         ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 0)

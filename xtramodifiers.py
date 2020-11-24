@@ -82,7 +82,10 @@ for event in dev.read_loop(): # reading events from keyboard
                         ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 0)
                         ui.syn()
                     else:
-                        pass
+                        # Necessary otherwise mod1 hold + some key press + mod2 hold
+                        # + mod1 up would ``lock'' mod1's secondary function
+                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 0)
+                        ui.syn()
                 else:
                     if (last_input_was_special_combination):
                         ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 0)
@@ -113,7 +116,10 @@ for event in dev.read_loop(): # reading events from keyboard
                         ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 0)
                         ui.syn()
                     else:
-                        pass
+                        # Necessary otherwise mod2 hold + some key press + mod1 hold +
+                        # mod2 up would ``lock'' mod2's secondary function
+                        ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 0)
+                        ui.syn()
                 else:
                     if (last_input_was_special_combination):
                         ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 0)

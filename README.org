@@ -45,18 +45,18 @@ None.
 
 Now that you have a config file, you can start xtramodifiers with:
 #+begin_src bash
-sudo python extramodifiers.py -c /path/to/config.py
+sudo python xtramodifiers.py -c /path/to/config.py
 #+end_src
 
 If no path to a config file is given, then xtramodifiers looks for a
 config.py file in the same directory.
 
-By default, extramodifiers shows you a list of device and asks you to
+By default, xtramodifiers shows you a list of device and asks you to
 select one of them. If you don't want this interactive behaviour use
 the '-d' option:
 
 #+begin_src bash
-sudo python extramodifiers.py -c /path/to/config.py -d /dev/input/event3
+sudo python xtramodifiers.py -c /path/to/config.py -d /dev/input/event3
 #+end_src
 
 * Similar Software

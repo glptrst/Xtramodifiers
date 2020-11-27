@@ -67,11 +67,11 @@ for event in dev.read_loop(): # reading events from keyboard
         if key_event.keycode == mod1: # MOD1 EVENT
             if key_event.keystate == 1:
                 mod1_down_or_held = True
-                last_input_was_special_combination = False # NECESSARY?
+                last_input_was_special_combination = False
                 mod1_last_time_down = time.monotonic()
             elif key_event.keystate == 2:
                 mod1_down_or_held = True
-                last_input_was_special_combination = False # NECESSARY?
+                last_input_was_special_combination = False
             else: # key_event.keystate == 0
                 mod1_down_or_held = False
                 print('mod1_down_or_held = False')
@@ -102,11 +102,11 @@ for event in dev.read_loop(): # reading events from keyboard
         elif key_event.keycode == mod2: # MOD2 EVENT
             if key_event.keystate == 1:
                 mod2_down_or_held = True
-                last_input_was_special_combination = False # NECESSARY?
+                last_input_was_special_combination = False
                 mod2_last_time_down = time.monotonic()
             elif key_event.keystate == 2:
                 mod2_down_or_held = True
-                last_input_was_special_combination = False # NECESSARY?
+                last_input_was_special_combination = False
             else: # key_event.keystate == 0
                 mod2_down_or_held = False
                 if (mod1_down_or_held):
@@ -152,12 +152,12 @@ for event in dev.read_loop(): # reading events from keyboard
             elif key_event.keystate == 2:
                 if (mod1_down_or_held):
                     last_input_was_special_combination = True
-                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 1) # NECESSARY?
+                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 2) # perhaps not necessary
                     ui.write(ecodes.EV_KEY, ecodes.ecodes[key_event.keycode], 2)
                     ui.syn()
                 elif (mod2_down_or_held):
                     last_input_was_special_combination = True
-                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 1) # NECESSARY?
+                    ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 2) # perhaps not necessary
                     ui.write(ecodes.EV_KEY, ecodes.ecodes[key_event.keycode], 2)
                     ui.syn()
                 else:

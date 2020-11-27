@@ -13,10 +13,12 @@ except:
     print('Error: must run as root')
     sys.exit()
 
+# use argparse to set arguments to accept
 parser = argparse.ArgumentParser(
     description="Make normal keys behave like modifiers when held.")
 parser.add_argument("-c", "--config", help="Specify configuration file")
 parser.add_argument("-d", "--device", help="Specify device")
+
 args = parser.parse_args()
 
 if args.config:
@@ -40,6 +42,8 @@ else:
     devices = select_devices()
     dev = devices[0]
 
+dev.grab() # intercept inputs from dev
+
 # Config vars
 mod1 = config.config['mod1']
 mod1_secondary_function = config.config['mod1_secondary_function']
@@ -55,8 +59,6 @@ mod2_down_or_held = False
 # Variables for calculating delay
 mod1_last_time_down = 0
 mod2_last_time_down = 0
-
-dev.grab() # intercept inputs from dev
 
 for event in dev.read_loop(): # reading events from keyboard
     if event.type == ecodes.EV_KEY:

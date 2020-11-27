@@ -84,8 +84,7 @@ for event in dev.read_loop(): # reading events from keyboard
                         ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 0)
                         ui.syn()
                     else:
-                        # Necessary otherwise mod1 hold + some key press + mod2 hold
-                        # + mod1 up would ``lock'' mod1's secondary function
+                        # Avoid ``locking'' mod1's secondary function down
                         ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 0)
                         ui.syn()
                 else:
@@ -98,7 +97,9 @@ for event in dev.read_loop(): # reading events from keyboard
                             ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1], 0)
                             ui.syn()
                         else:
-                            pass
+                            # Avoid ``locking'' mod1's secondary function down
+                            ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 0)
+                            ui.syn()
         elif key_event.keycode == mod2: # MOD2 EVENT
             if key_event.keystate == 1:
                 mod2_down_or_held = True
@@ -118,8 +119,7 @@ for event in dev.read_loop(): # reading events from keyboard
                         ui.write(ecodes.EV_KEY, ecodes.ecodes[mod1_secondary_function], 0)
                         ui.syn()
                     else:
-                        # Necessary otherwise mod2 hold + some key press + mod1 hold +
-                        # mod2 up would ``lock'' mod2's secondary function
+                        # Avoid ``locking'' mod2's secondary function down
                         ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 0)
                         ui.syn()
                 else:
@@ -132,7 +132,9 @@ for event in dev.read_loop(): # reading events from keyboard
                             ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2], 0)
                             ui.syn()
                         else:
-                            pass
+                            # Avoid ``locking'' mod2's secondary function down
+                            ui.write(ecodes.EV_KEY, ecodes.ecodes[mod2_secondary_function], 0)
+                            ui.syn()
         else: # ANY OTHER KEYS
             if key_event.keystate == 1:
                 if (mod1_down_or_held):

@@ -67,6 +67,8 @@ sudo python xtramodifiers.py -c /path/to/config.py -d /dev/input/event3
 - [[https://gitlab.com/at-home-modifier/at-home-modifier-evdev][at home modifier]]
 
 * Bugs
+- touchpad stops working --- whereas buttons and trackpoint work.
+
 - xtramodifiers, when executed, resets my xkb configuration, so I have
   to restore it each time.
 
